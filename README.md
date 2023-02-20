@@ -1,7 +1,8 @@
 GROUP:
 
-    Jorge Roa (jurjoroa) | 226454@students.hertie-school.org
-    Carmen Garro | 226594@students.hertie-school.org
+Jorge Roa (jurjoroa) | 226454@students.hertie-school.org
+
+Carmen Garro | 226594@students.hertie-school.org
 
 
 
