@@ -5,63 +5,47 @@ from Creature import Fish
 
 class River:
     
-    def __init__(self, n_room):
-        self.__planet = "None"
-        self.__n_room = n_room
+    def __init__(self, n_rooms):
+        self.__planet = ["None"] * n_rooms
+        self.__n_rooms = n_rooms
         
-    
     def initialize(self):
-        animals = np.random.choice([Bear, Fish, "None"], size = self.__n_room) #Assign three types
-        self.__planet = []
-
-        for place, types in enumerate(animals): #Enumerate help us to iterate through our options according to the index.
-            self.__planet.append(types(place) if types != "None" else "None")
+        animal_types = [Bear, Fish, "None"]
+        self.__planet = [animal_type(i) if animal_type != "None" else "None" for i, animal_type in enumerate(np.random.choice(animal_types, size=self.__n_rooms))]
     
-    def next_time_step(self, n = 1, print_result = True):
-        self.__n_room = max(self.__n_room, n) 
-        for i in range(n):
-            place_move = np.random.choice(list(range(self.__n_room)))
-            if self.__planet[place_move] == "None": #If types is equal to "None", it's added to __planet list.
+    def next_time_step(self, n_steps=1, print_result=True):
+        self.__n_rooms = max(self.__n_rooms, n_steps) 
+        for i in range(n_steps):
+            room_to_move = np.random.choice(list(range(self.__n_rooms)))
+            if self.__planet[room_to_move] == "None":
                 pass
             else:
-                types = self.__planet[place_move]
-                new_range = types.move( self.__planet)
-
-                if new_range < 0 or new_range > len( self.__planet) - 1:
-                    pass
-
-                else:
-
-                    if isinstance(types, Bear):
-                        if isinstance( self.__planet[new_range], Bear):
-
-                            pass
-
-                        elif isinstance( self.__planet[new_range], Fish):
-
-                            self.__planet[new_range] = Bear(new_range)
-                            self.__planet[place_move] = "None"
-
-                        else:
-                            self.__planet[new_range] = Bear(new_range)
-
-                    elif isinstance(types, Fish):
-
-                        if isinstance( self.__planet[new_range], Fish):
-                            pass
-
-                        elif isinstance( self.__planet[new_range], Bear):
-                            self.__planet[place_move] = "None"
-
-                        else:
-                            self.__planet[new_range] = Fish(new_range)
-
-                if print_result == True:
-                    print(f"{types} {place_move} -> to {new_range} place")
+                animal = self.__planet[room_to_move]
+                new_room = animal.move(self.__planet)
+                if not (0 <= new_room < len(self.__planet)):
+                    continue
+                if animal.__class__.__name__ == "Bear":
+                    if self.__planet[new_room].__class__.__name__ == "Bear":
+                        pass
+                    elif self.__planet[new_room].__class__.__name__ == "Fish":
+                        self.__planet[new_room] = Bear(new_room)
+                        self.__planet[room_to_move] = "None"
+                    else:
+                        self.__planet[new_room] = Bear(new_room)
+                elif animal.__class__.__name__ == "Fish":
+                    if self.__planet[new_room].__class__.__name__ == "Fish":
+                        pass
+                    elif self.__planet[new_room].__class__.__name__ == "Bear":
+                        self.__planet[room_to_move] = "None"
+                    else:
+                        self.__planet[new_room] = Fish(new_room)
+                if print_result:
+                    print(f"{animal} in place {room_to_move} moved to {new_room} place.")
         
     def display(self):
         print("===================")
         print("Ecosystem status:\n")
         print(self.__planet, "\n")
         print("===================")
+
 
