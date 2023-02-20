@@ -40,7 +40,7 @@ class River:
                     else:
                         self.__planet[new_room] = Fish(new_room)
                 if print_result:
-                    print(f"{animal} in place {room_to_move} moved to {new_room} place.")
+                    print(f"{animal} in [{room_to_move}] -> {new_room} place.")
         
     def display(self):
         print("===================")
